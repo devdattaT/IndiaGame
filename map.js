@@ -4,6 +4,9 @@ var stNames = ["Andaman and Nicobar", "Andhra Pradesh", "Arunachal Pradesh", "As
 
 var map = L.map('map').setView([25, 80], 4);
 
+var correctUnits=[];
+
+
 L.tileLayer('http://oatile{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg', {
 	attribution : 'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency',
 	subdomains : '1234'
@@ -59,11 +62,42 @@ function onEachFeature(feature, layer) {
 }
 function NameSelected(val) {
 	var code = selectedFeature.properties.CD;
-	console.log(val, code);
+	
 	if (val === code) {
 		selectedFeature.properties.v = 2;
+               addUnit(code)
 	} else {
 		selectedFeature.properties.v = 0;
+            removeUnit(code);
 	}
 	sLayer.setStyle(styleSelector);
+        showScore();
+        
+}
+
+function showScore(){
+    var msg= "Correctly Guessed "+String(correctUnits.length) +" out of "+ String(stCodes.length);
+    document.getElementById("ScoreDiv").innerHTML=msg;
+    
+   /* if(correctUnits.length>32){
+        if(correctUnits.length<36){
+            alert("Just a few More to Go");
+        }else{
+            //success
+        }
+    }*/
+}
+
+function addUnit(val){
+    //check if it exists
+    if(correctUnits.indexOf(val)<0){
+        correctUnits.push(val);
+    }
+}
+
+function removeUnit(val){
+      if(correctUnits.indexOf(val)>-1){
+        correctUnits.pop(val);
+        console.log("removed" + val);
+    }
 }
