@@ -52,12 +52,17 @@ var sLayer = L.geoJson(geojson, {
 		style : styleSelector,
 		onEachFeature : onEachFeature
 	}).addTo(map);
-
+var popup;
 function onEachFeature(feature, layer) {
-	var popupContent = 'Select Name: <select onchange="NameSelected(this.value)"><option value="AN">Andaman and Nicobar</option><option value="AP">Andhra Pradesh</option><option value="AR">Arunachal Pradesh</option><option value="AS">Assam</option><option value="BR">Bihar</option><option value="CT">Chhattisgarh</option><option value="CH">Chandigarh</option><option value="DN">Dadra and Nagar Haveli</option><option value="DD">Daman and Diu</option><option value="DL">Delhi</option><option value="GA">Goa</option><option value="GJ">Gujarat</option><option value="HR">Haryana</option><option value="HP">Himachal Pradesh</option><option value="JK">Jammu and Kashmir</option><option value="JH">Jharkhand</option><option value="KA">Karnataka</option><option value="KL">Kerala</option><option value="LD">Lakshadweep</option><option value="MP">Madhya Pradesh</option><option value="MH">Maharashtra</option><option value="MN">Manipur</option><option value="ML">Meghalaya</option><option value="MZ">Mizoram</option><option value="NL">Nagaland</option><option value="OR">Orissa</option><option value="PY">Puducherry</option><option value="PB">Punjab</option><option value="RJ">Rajasthan</option><option value="SK">Sikkim</option><option value="TN">Tamil Nadu</option><option value="TS">Telengana</option><option value="TR">Tripura</option><option value="UT">Uttarakhand</option><option value="UP">Uttar Pradesh</option><option value="WB">West Bengal</option> </select>';
-	layer.bindPopup(popupContent);
 	layer.on('click', function (e) {
+        
 		selectedFeature = feature;
+        //show popup
+        var popText=createPopUpText();
+        popup = L.popup().setLatLng(e.latlng)
+            .setContent(popText).openOn(map);
+            //set focus
+            document.getElementById('StateSelector').focus()
 	});
 }
 function NameSelected(val) {
@@ -79,19 +84,22 @@ function showScore(){
     var msg= "Correctly Guessed "+String(correctUnits.length) +" out of "+ String(stCodes.length);
     document.getElementById("ScoreDiv").innerHTML=msg;
     
-   /* if(correctUnits.length>32){
-        if(correctUnits.length<36){
-            alert("Just a few More to Go");
-        }else{
-            //success
-        }
-    }*/
+   if(correctUnits.length>35){
+        alert("Congratulations! You have guessed all of the States & UTs");
+      }
 }
 
 function addUnit(val){
     //check if it exists
     if(correctUnits.indexOf(val)<0){
         correctUnits.push(val);
+        
+        //remove selector
+        var x = document.getElementById("StateSelector");
+        x.remove(x.selectedIndex);
+        
+        //remove popup
+        map.closePopup(popup);
     }
 }
 
@@ -100,4 +108,19 @@ function removeUnit(val){
         correctUnits.pop(val);
         console.log("removed" + val);
     }
+}
+
+function createPopUpText(){
+var  innerHTML='Select Name: <select id="StateSelector" onchange="NameSelected(this.value)"> <option value="--">-----</option>';
+for(var i=0;i<36;i++){
+    var stCode=stCodes[i];
+    if(correctUnits.indexOf(stCode)<0){
+    var name=stNames[i];
+    var txt='<option value="'+stCode+'">'+name+'</option>';
+    innerHTML=innerHTML+txt;
+    }
+}
+innerHTML=innerHTML+'<select>';
+
+return innerHTML;
 }
