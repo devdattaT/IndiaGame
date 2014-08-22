@@ -107,7 +107,7 @@ function addUnit(val){
 function removeUnit(val){
       if(correctUnits.indexOf(val)>-1){
         correctUnits.pop(val);
-        console.log("removed" + val);
+        
     }
 }
 
