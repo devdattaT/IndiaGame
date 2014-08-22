@@ -55,14 +55,15 @@ var sLayer = L.geoJson(geojson, {
 var popup;
 function onEachFeature(feature, layer) {
 	layer.on('click', function (e) {
-        
-		selectedFeature = feature;
+        selectedFeature = feature;
+		if (feature.properties.v!=2){
         //show popup
         var popText=createPopUpText();
         popup = L.popup().setLatLng(e.latlng)
             .setContent(popText).openOn(map);
             //set focus
-            document.getElementById('StateSelector').focus()
+            document.getElementById('StateSelector').focus();
+			}
 	});
 }
 function NameSelected(val) {
