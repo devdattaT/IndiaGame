@@ -81,11 +81,11 @@ function NameSelected(val) {
 }
 
 function showScore(){
-    var msg= "Correctly Guessed "+String(correctUnits.length) +" out of "+ String(stCodes.length);
+    var msg= "Correctly Named "+String(correctUnits.length) +" out of "+ String(stCodes.length);
     document.getElementById("ScoreDiv").innerHTML=msg;
     
    if(correctUnits.length>35){
-        alert("Congratulations! You have guessed all of the States & UTs");
+        alert("Congratulations! You have named all of the States & UTs");
       }
 }
 
