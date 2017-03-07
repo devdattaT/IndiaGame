@@ -1,7 +1,8 @@
 var selectedFeature;
 var stCodes = ["AN", "AP", "AR", "AS", "BR", "CH", "CT", "DN", "DD", "DL", "GA", "GJ", "HR", "HP", "JK", "JH", "KA", "KL", "LD", "MP", "MH", "MN", "ML", "MZ", "NL", "OR", "PY", "PB", "RJ", "SK", "TN", "TS", "TR", "UP", "UT", "WB"];
 var stNames = ["Andaman and Nicobar", "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chandigarh", "Chhattisgarh", "Dadra and Nagar Haveli", "Daman and Diu", "Delhi", "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jammu and Kashmir", "Jharkhand", "Karnataka", "Kerala", "Lakshadweep", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Orissa", "Puducherry", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telengana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal"];
-
+var clickedSt=[];
+var firstTry=0;
 var map = L.map('map').setView([25, 80], 4);
 
 var correctUnits=[];
@@ -76,6 +77,13 @@ function onEachFeature(feature, layer) {
 }
 function NameSelected(val) {
 	var code = selectedFeature.properties.CD;
+	if(clickedSt.indexOf(code)<0){
+		//user has clicked on this state for the first time
+		clickedSt.push(code);
+		if(val==code){
+			firstTry++;
+		}
+	}
 	
 	if (val === code) {
 		selectedFeature.properties.v = 2;
@@ -90,7 +98,7 @@ function NameSelected(val) {
 }
 
 function showScore(){
-    var msg= "Correctly Named "+String(correctUnits.length) +" out of "+ String(stCodes.length);
+    var msg= `Correctly Named ${correctUnits.length} out of ${stCodes.length}. <br> Named on the First try: ${firstTry}`;
     document.getElementById("ScoreDiv").innerHTML=msg;
     
    if(correctUnits.length>35){
