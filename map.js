@@ -3,6 +3,7 @@ var stCodes = ["AN", "AP", "AR", "AS", "BR", "CH", "CT", "DN", "DD", "DL", "GA",
 var stNames = ["Andaman and Nicobar", "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chandigarh", "Chhattisgarh", "Dadra and Nagar Haveli", "Daman and Diu", "Delhi", "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jammu and Kashmir", "Jharkhand", "Karnataka", "Kerala", "Lakshadweep", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Orissa", "Puducherry", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telengana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal"];
 var clickedSt=[];
 var firstTry=0;
+var start, end;
 var map = L.map('map').setView([25, 80], 4);
 
 var correctUnits=[];
@@ -76,6 +77,12 @@ function onEachFeature(feature, layer) {
 	});
 }
 function NameSelected(val) {
+	//if the time is not set
+	if(null==start){
+		start=new Date();
+	}
+	
+
 	var code = selectedFeature.properties.CD;
 	if(clickedSt.indexOf(code)<0){
 		//user has clicked on this state for the first time
@@ -102,7 +109,10 @@ function showScore(){
     document.getElementById("ScoreDiv").innerHTML=msg;
     
    if(correctUnits.length>35){
-        alert("Congratulations! You have named all of the States & UTs");
+        end=new Date();
+		var duration=msToTime(end-start);
+		alert("Congratulations! You have named all of the States & UTs in "+duration);
+		
       }
 }
 
@@ -140,4 +150,22 @@ for(var i=0;i<36;i++){
 innerHTML=innerHTML+'<select>';
 
 return innerHTML;
+}
+
+function msToTime(s) {
+  var ms = s % 1000;
+  s = (s - ms) / 1000;
+  var secs = s % 60;
+  s = (s - secs) / 60;
+  var mins = s % 60;
+  var hrs = (s - mins) / 60;
+  var ts=secs+" Seconds";
+  if((mins>0)||(hrs>0)){
+	  ts=mins+" Minutes And "+ts;
+  }
+  if(hrs>0){
+	  ts=hrs+" Hours And "+ ts;
+  }
+
+  return ts;
 }
