@@ -24,7 +24,7 @@ if(api_key){
 
 var defStyle = {
 	weight : 2,
-	color : "#B0DE5C",
+	color : "#bc2317",
 	opacity : 1,
 	fillColor : "#B0DE5C",
 	fillOpacity : 0.3
